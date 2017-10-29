@@ -1,0 +1,11 @@
+- hosts: esig
+
+  tasks:
+
+  - include: roles/tasks/user.yaml
+  - include: roles/tasks/nginx.yaml
+  - include: roles/tasks/postgresql.yaml
+  - include: roles/tasks/monit.yaml
+  - include: roles/tasks/iptables.yaml
+  
+  #use with_fileglob in the future, solve order problem (glob.glob())

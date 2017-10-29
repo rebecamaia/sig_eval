@@ -1,0 +1,6 @@
+#Creating new user
+  - user:
+      name: esig-teste
+      uid: 2017
+      group: users
+  #attempt to create new user with the same UID will cause the script to break

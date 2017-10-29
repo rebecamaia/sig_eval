@@ -1,0 +1,30 @@
+#Installing and configuring PostgreSQL
+#Also, psycopg2 needed
+  - name: update and install postgresql
+    apt:
+      name: postgresql-9.6
+      update_cache: yes
+  - name: update and install psycopg2
+    apt:
+      name: python-psycopg2
+      update_cache: yes
+  - name: start postgresql service
+    service:
+      name: postgresql
+      enabled: yes
+      state: started
+
+#Creating user and DB (must be ran as postgres user)
+  - name: create db user
+    become: true
+    become_user: postgres
+    postgresql_user:
+      name: esig
+      password: 3s1g
+      role_attr_flags: CREATEDB,NOSUPERUSER
+  - name: create db
+    become: true
+    become_user: postgres
+    postgresql_db:
+      name: esigdb
+      owner: esig 

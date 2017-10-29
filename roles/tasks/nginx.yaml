@@ -1,0 +1,59 @@
+#Installing and configuring Nginx
+  - name: update rep and install nginx
+    apt:
+      name: nginx
+      update_cache: yes
+
+  - name: start nginx service
+    service: 
+      name: nginx
+      enabled: yes
+      state: started
+
+#Creating directories /var/www and copying respective files
+  - name: create block directory (teste)
+    file:
+      path: /var/www/teste-esig.com.br/html
+      state: directory
+  - name: create block directory (aval)
+    file:
+      path: /var/www/avaliacao-esig.com.br/html
+      state: directory
+
+  - name: copy configuration files (html teste)
+    copy:
+      src: roles/files/teste-index.html
+      dest: /var/www/teste-esig.com.br/html/index.html
+  - name: copy configuration files (html aval)
+    copy:
+      src: roles/files/avaliacao-index.html
+      dest: /var/www/avaliacao-esig.com.br/html/index.html
+
+#Copying block configuration files and creating symlinks
+  - name: copy blocks configuration files (sites available - teste)
+    copy:
+      src: roles/files/teste-nginx
+      dest: /etc/nginx/sites-available/teste-esig.com.br
+  - name: copy blocks configuration files (sites available - aval)
+    copy:
+      src: roles/files/avaliacao-nginx
+      dest: /etc/nginx/sites-available/avaliacao-esig.com.br
+
+  - name: create links (teste)
+    file:
+      src: /etc/nginx/sites-available/teste-esig.com.br
+      dest: /etc/nginx/sites-enabled/teste-esig.com.br
+      state: link
+      force: yes
+  - name: create links (aval)
+    file:
+      src: /etc/nginx/sites-available/avaliacao-esig.com.br
+      dest: /etc/nginx/sites-enabled/avaliacao-esig.com.br
+      state: link
+      force: yes
+
+#Reloading service with new configuration
+  - name: reload service
+    service:
+      name: nginx
+      state: reloaded

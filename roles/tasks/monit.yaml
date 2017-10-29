@@ -1,0 +1,17 @@
+#Installing and configuring Monit
+  - name: update rep and install monit
+    apt:
+      name: monit
+      update_cache: yes
+
+#Copying configuration file to directory
+  - name: copy configuration file to monitrc
+    copy:
+      src: roles/files/monitconf
+      dest: /etc/monit/monitrc
+
+#Reloading service
+  - name: reload service
+    service:
+      name: monit
+      state: reloaded
